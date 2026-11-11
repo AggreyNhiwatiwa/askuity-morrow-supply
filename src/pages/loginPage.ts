@@ -20,13 +20,13 @@ class LoginPage {
   }
 
   //Using accessibility based selector here, as the placeholder text in the Input element is a HTML attribute, not text
-  //Targets label, role selectors are case sensitive
+  //Despite the Inputs not having an explicitly defined aria-label, it gets computed from the associated label
   get usernameInput() {
-    return $('role/textbox[name="Username"]');
+    return $('aria/Username');
   }
 
   get passwordInput() {
-    return $('role/textbox[name="Password"]');
+    return $('aria/Password');
   }
 
   get loginButton() {
