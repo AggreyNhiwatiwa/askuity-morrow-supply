@@ -17,6 +17,10 @@
     "typescript-eslint": "^8.72.2"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run ./wdio.conf.ts",
+    "test:e2e": "PATH=\"$(brew --prefix ffmpeg@7)/bin:$PATH\" wdio run ./wdio.conf.ts"
+  },
+  "dependencies": {
+    "fluent-ffmpeg": "^2.1.3"
   }
 }
