@@ -6,6 +6,10 @@ class LoginPage {
     await browser.url('/login');
   }
 
+  async isLoaded() {
+    return this.title.waitForDisplayed();
+  }
+
   async login(username: string, password: string) {
     await this.usernameInput.setValue(username);
     await this.passwordInput.setValue(password);

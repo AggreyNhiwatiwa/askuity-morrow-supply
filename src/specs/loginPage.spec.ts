@@ -11,7 +11,7 @@ describe('Login Page Tests', () => {
 
   //Correct URL does not guarantee a page has actually rendered (what the user sees)
   it('should display the login page', async () => {
-    await expect(loginPage.title).toBeDisplayed();
+    await expect(await loginPage.isLoaded()).toBe(true);
   });
 
   it('should allow an authorized user to login with valid credentials', async () => {
@@ -22,6 +22,6 @@ describe('Login Page Tests', () => {
     }
 
     await loginPage.login(username, password);
-    await expect(storePage.title).toBeDisplayed();
+    await expect(await storePage.isLoaded()).toBe(true); //This could technically be await storePage.isLoaded();, but I want the visible assertion here
   });
 });
