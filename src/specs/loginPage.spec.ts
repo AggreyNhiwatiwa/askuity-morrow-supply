@@ -7,9 +7,15 @@ describe('Login Page Tests', () => {
 
   beforeEach(async () => {
     await loginPage.open();
+    await loginPage.isLoaded();
   });
 
-  //Correct URL does not guarantee a page has actually rendered (what the user sees)
+  /*
+  Correct URL does not guarantee a page has actually rendered (what the user sees)
+  Technically, there is redundancy here as the beforeEach already waits for the page to load,
+  but this test explicitly asserts it for clarity and visibility to the user.
+  If more users are added, I'd rather have the redundancy once here than in each user login method to assert a page load.
+  */
   it('should display the login page', async () => {
     await expect(await loginPage.isLoaded()).toBe(true);
   });

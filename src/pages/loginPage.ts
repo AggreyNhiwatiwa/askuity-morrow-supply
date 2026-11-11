@@ -6,6 +6,7 @@ class LoginPage {
     await browser.url('/login');
   }
 
+  //waitForDisplayed enables auto-retries on everything that uses the helper
   async isLoaded() {
     return this.title.waitForDisplayed();
   }
