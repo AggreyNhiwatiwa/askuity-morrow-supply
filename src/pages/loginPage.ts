@@ -8,7 +8,9 @@ class LoginPage {
 
   //waitForDisplayed enables auto-retries on everything that uses the helper
   async isLoaded() {
-    return this.title.waitForDisplayed();
+    return this.title.waitForDisplayed({
+      timeoutMsg: 'The Login Page failed to load',
+    });
   }
 
   async login(username: string, password: string) {
@@ -36,6 +38,10 @@ class LoginPage {
 
   get loginButton() {
     return $('button=Login');
+  }
+
+  get errorMessageBox() {
+    return $('role/alert'); //Limitations on native mobile, as accessibility Ids are needed there
   }
 }
 

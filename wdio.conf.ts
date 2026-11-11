@@ -102,7 +102,21 @@ export const config: WebdriverIO.Config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: [['devtools', { mode: 'live' }]],
+  services: [
+    [
+      'devtools',
+      {
+        mode: 'live',
+        screencast: {
+          enabled: true,
+          captureFormat: 'jpeg',
+          quality: 70,
+          maxWidth: 1280,
+          maxHeight: 720,
+        },
+      },
+    ],
+  ],
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
