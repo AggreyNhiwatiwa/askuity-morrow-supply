@@ -1,7 +1,7 @@
 export enum InventoryCategories {
-  AllCategories = 'AllCategories',
-  Apparel = 'Apparel',
-  Accessories = 'Accessories',
-  Books = 'Books',
-  Gear = 'Gear',
+  ALLCATEGORIES = 'AllCategories',
+  APPAREL = 'Apparel',
+  ACCESSORIES = 'Accessories',
+  BOOKS = 'Books',
+  GEAR = 'Gear',
 }
