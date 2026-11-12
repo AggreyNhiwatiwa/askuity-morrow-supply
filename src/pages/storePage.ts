@@ -2,6 +2,7 @@ import InventoryItem from '../components/inventoryItem';
 class StorePage {
   readonly inventoryItem = InventoryItem;
   //No open function, as the StorePage is only reachable after login unless I implement session persistence
+  //Added getDisplayedItemsCountFromText to retrieve the item count from the displayed text
 
   async isLoaded() {
     return this.title.waitForDisplayed({
@@ -32,7 +33,7 @@ class StorePage {
   Returns a number I can perform arithmetic on (first number in string)
   Throws an error if no number is found
   */
-  async getItemsDisplayedCount(): Promise<number> {
+  async getDisplayedItemsCountFromText() {
     const text = await this.noItemsDisplayedText.getText();
     const match = text.match(/\d+/);
 

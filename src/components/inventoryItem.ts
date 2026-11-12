@@ -4,13 +4,13 @@ class InventoryItem {
     as well as a data-test-id attribute, so my selectors can use these
     $$ is used, as there may be multiple inventory item tiles on the page.
     */
-  get allInventoryItems() {
+  get displayedInventoryItems() {
     return $$('div[data-test="inventory-item"]');
   }
 
   //Retuns Number
   async getCount() {
-    return (await this.allInventoryItems).length;
+    return (await this.displayedInventoryItems).length;
   }
 }
 

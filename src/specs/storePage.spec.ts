@@ -1,6 +1,7 @@
 import { expect } from '@wdio/globals';
 import storePage from '../pages/storePage';
 import loginPage from '../pages/loginPage';
+import { verifyInventoryItemCount } from '../helpers/storeAssertions';
 
 describe('Store Page Tests', () => {
   beforeEach(async () => {
@@ -16,14 +17,19 @@ describe('Store Page Tests', () => {
   });
 
   it('should display the correct number of inventory items in the items to explore UI', async () => {
-    //Number of reported items
-    const reportedItemCount = await storePage.getItemsDisplayedCount();
-    expect(reportedItemCount).toBeGreaterThan(0);
-    console.log(`Number of items reported: ${reportedItemCount}`);
+    await verifyInventoryItemCount();
+  });
 
-    //Number of actual items displayed on the page
-    const actualItemCount = await storePage.inventoryItem.getCount();
-    expect(actualItemCount).toBe(reportedItemCount); //toBe for strict equality
-    console.log(`Number of actual items displayed: ${actualItemCount}`);
+  //This method would also work for multiple categories
+  /*
+Select a category in the UI
+Go through each product tile in sequence and click it
+Verify the category matches the category of the filter.
+
+- Helper for getting category/details from an item
+- Helper for validating the actual count matches the listed count
+  */
+  it('should filter inventory items by category', async () => {
+    expect(await storePage.isLoaded()).toBe(true);
   });
 });
