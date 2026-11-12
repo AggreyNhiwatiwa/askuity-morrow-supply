@@ -4,7 +4,7 @@ import storePage from '../pages/storePage';
 
 describe('Login Page Tests', () => {
   const password = process.env.PASSWORD;
-  const lockedUserErrorMessage = 'Epic sadface: Sorry, this user has been locked out.';
+  const lockedUserErrorMessage = 'Epic sadface below — Sorry, this user has been locked out';
 
   beforeEach(async () => {
     await loginPage.open();
