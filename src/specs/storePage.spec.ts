@@ -1,7 +1,9 @@
 import { expect } from '@wdio/globals';
 import storePage from '../pages/storePage';
 import loginPage from '../pages/loginPage';
+import itemDetailsPage from '../pages/itemDetailsPage';
 import { verifyInventoryItemCount } from '../helpers/storeAssertions';
+import { InventoryCategories } from '../enums/inventoryCategories';
 
 describe('Store Page Tests', () => {
   beforeEach(async () => {
@@ -20,19 +22,39 @@ describe('Store Page Tests', () => {
     await verifyInventoryItemCount();
   });
 
-  //This method would also work for multiple categories
   /*
-Select a category in the UI
-Go through each product tile in sequence and click it
-Verify the category matches the category of the filter.
-
-- Helper for getting category/details from an item
-- Helper for validating the actual count matches the listed count
+  Parameterized test for each inventory category except 'AllCategories'
+  Will automatically test new categories as long as enum is updated with them
   */
-  describe('Product Filtering by Category Tests', () => {
-    it('should display and filter inventory items by the Apparel category', async () => {
-      await storePage.selectCategory('Apparel');
-      await storePage.inventoryItem.getDisplayedItems();
-    });
+  describe('Category Filtering', () => {
+    const categories = Object.values(InventoryCategories).filter(
+      (category) => category !== InventoryCategories.AllCategories,
+    );
+
+    for (const category of categories) {
+      it(`should select the ${category} filter and only display inventory items belonging to ${category}`, async () => {
+        await storePage.selectCategory(category);
+        await verifyInventoryItemCount();
+        const items = await storePage.inventoryItem.getDisplayedItems();
+
+        //TODO: Remove temporary assertion and replace with UI assertion for no matching results (can apply to sort or search also)
+        expect(items.length).toBeGreaterThan(0);
+
+        //Verify each item's actual category
+        for (const item of items) {
+          await storePage.inventoryItem.openItemById(item.id);
+
+          await expect(itemDetailsPage.category).toHaveText(category);
+
+          console.log(`Verified ${item.name} (ID: ${item.id}) belongs to ${category}`);
+
+          await browser.back();
+          await expect(storePage.title).toBeDisplayed();
+
+          // Restore the filter as back navigation resets it
+          await storePage.selectCategory(category);
+        }
+      });
+    }
   });
 });
