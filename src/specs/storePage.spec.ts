@@ -28,7 +28,7 @@ describe('Store Page Tests', () => {
   */
   describe('Category Filtering', () => {
     const categories = Object.values(InventoryCategories).filter(
-      (category) => category !== InventoryCategories.AllCategories,
+      (category) => category !== InventoryCategories.ALLCATEGORIES,
     );
 
     for (const category of categories) {
