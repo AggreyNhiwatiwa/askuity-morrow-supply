@@ -15,12 +15,15 @@ describe('Store Page Tests', () => {
     expect(await storePage.isLoaded()).toBe(true);
   });
 
-  it('should display the correct number of items', async () => {
+  it('should display the correct number of inventory items in the items to explore UI', async () => {
     //Number of reported items
-    const itemCount = await storePage.getItemsDisplayedCount();
-    expect(itemCount).toBeGreaterThan(0);
-    console.log(`Number of items displayed: ${itemCount}`);
+    const reportedItemCount = await storePage.getItemsDisplayedCount();
+    expect(reportedItemCount).toBeGreaterThan(0);
+    console.log(`Number of items reported: ${reportedItemCount}`);
 
     //Number of actual items displayed on the page
+    const actualItemCount = await storePage.inventoryItem.getCount();
+    expect(actualItemCount).toBe(reportedItemCount); //toBe for strict equality
+    console.log(`Number of actual items displayed: ${actualItemCount}`);
   });
 });

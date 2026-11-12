@@ -1,4 +1,6 @@
+import InventoryItem from '../components/inventoryItem';
 class StorePage {
+  readonly inventoryItem = InventoryItem;
   //No open function, as the StorePage is only reachable after login unless I implement session persistence
 
   async isLoaded() {
