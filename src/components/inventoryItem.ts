@@ -13,6 +13,10 @@ class InventoryItem {
     return item.$('a[data-test="inventory-item-name"]');
   }
 
+  getById(id: string) {
+    return $(`div[data-test="inventory-item"][data-test-item-id="${id}"]`);
+  }
+
   //Returns Number
   async getCount() {
     return (await this.displayedInventoryItems).length;
