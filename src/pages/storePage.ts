@@ -18,6 +18,14 @@ class StorePage {
     return $('button=Logout');
   }
 
+  get categoryFilterDropdown() {
+    return $('select[data-test="filter-category"]');
+  }
+
+  get sortDropdown() {
+    return $('select[data-test="sort-select"]');
+  }
+
   /*
   Dynamically getting the itemcount from the number of items displayed text
   Should match the actual count of items displayed on the page
@@ -42,6 +50,16 @@ class StorePage {
     }
 
     return Number(match[0]);
+  }
+
+  async selectCategory(category: string) {
+    await this.categoryFilterDropdown.click();
+    await this.categoryFilterDropdown.selectByVisibleText(category);
+  }
+
+  async selectSortOption(option: string) {
+    await this.sortDropdown.click();
+    await this.sortDropdown.selectByVisibleText(option);
   }
 }
 
