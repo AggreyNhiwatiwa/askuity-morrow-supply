@@ -23,7 +23,7 @@ class LoginPage {
 
   //Recommended WDIO text selector strategy for unique text elements on the page
   get title() {
-    return $('h1=A good place to begin.');
+    return $('role/heading[name="A good place to begin."]');
   }
 
   //Using accessibility based selector here, as the placeholder text in the Input element is a HTML attribute, not text
