@@ -17,6 +17,20 @@ class InventoryItem {
     return $(`div[data-test="inventory-item"][data-test-item-id="${id}"]`);
   }
 
+  /*
+  Link needs to be clicked to actually nav to item details page
+  More robust than using role locator, as role locator requires knowing the name beforehand
+  If the product names or order change (like sorting), this method will still correctly locate the item by its ID
+  */
+  getItemNameLinkById(id: string) {
+    return this.getById(id).$('a[data-test="inventory-item-name"]');
+  }
+
+  // Open the item's details by clicking its name
+  async openItemById(id: string) {
+    await this.getItemNameLinkById(id).click();
+  }
+
   //Returns Number
   async getCount() {
     return (await this.displayedInventoryItems).length;
