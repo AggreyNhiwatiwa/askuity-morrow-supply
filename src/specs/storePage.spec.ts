@@ -29,8 +29,10 @@ Verify the category matches the category of the filter.
 - Helper for getting category/details from an item
 - Helper for validating the actual count matches the listed count
   */
-  it('should filter inventory items by the Apparel category', async () => {
-    await storePage.selectCategory('Apparel');
-    await storePage.selectSortOption('Price: Low to High');
+  describe('Product Filtering by Category Tests', () => {
+    it('should display and filter inventory items by the Apparel category', async () => {
+      await storePage.selectCategory('Apparel');
+      await storePage.inventoryItem.getDisplayedItems();
+    });
   });
 });
