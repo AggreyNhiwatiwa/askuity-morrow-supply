@@ -12,10 +12,6 @@ export default defineConfig([
 
     extends: [js.configs.recommended, tseslint.configs.recommended],
 
-    rules: {
-      'lines-around-comment': ['error', { beforeLineComment: true, beforeBlockComment: true }],
-    },
-
     languageOptions: {
       globals: {
         ...globals.node,
