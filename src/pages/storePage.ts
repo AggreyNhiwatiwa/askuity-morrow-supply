@@ -57,7 +57,7 @@ class StorePage {
     await this.categoryFilterDropdown.selectByVisibleText(category);
   }
 
-  async selectSortOption(option: string) {
+  async selectSortOrder(option: string) {
     await this.sortDropdown.click();
     await this.sortDropdown.selectByVisibleText(option);
   }
