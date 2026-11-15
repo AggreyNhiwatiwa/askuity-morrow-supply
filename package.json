@@ -22,7 +22,8 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.ts",
-    "test:e2e": "PATH=\"$(brew --prefix ffmpeg@7)/bin:$PATH\" wdio run ./wdio.conf.ts"
+    "test:e2e": "PATH=\"$(brew --prefix ffmpeg@7)/bin:$PATH\" wdio run ./wdio.conf.ts",
+    "test:cart": "npm run test:e2e -- --spec ./src/specs/cartPage.spec.ts"
   },
   "dependencies": {
     "fluent-ffmpeg": "^2.1.3"

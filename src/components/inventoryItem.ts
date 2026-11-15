@@ -6,7 +6,49 @@ class InventoryItem {
     $$ is used, as there may be multiple inventory item tiles on the page.
     */
   get displayedInventoryItems() {
-    return $$('div[data-test="inventory-item"]');
+    return $$('[data-test="inventory-item"]');
+  }
+
+  //Partial selector as all add to cart buttons start with add-to-cart- before a unique string
+  getAddToCartButton(id: string) {
+    return this.getById(id).$('[data-test^="add-to-cart-"]');
+  }
+
+  // async addToCartById(id: string) {
+  //   await this.getAddToCartButton(id).click();
+  // }
+
+  async addToCartById(id: string) {
+    const item = this.getById(id);
+    const button = this.getAddToCartButton(id);
+
+    console.log(`Product ID: ${id}`);
+    console.log(`Inventory tile exists: ${await item.isExisting()}`);
+    console.log(`Add-to-cart button exists: ${await button.isExisting()}`);
+
+    if (!(await button.isExisting())) {
+      throw new Error(`Add-to-cart button not found for product ${id}`);
+    }
+
+    console.log(`Button test ID: ${await button.getAttribute('data-test')}`);
+
+    await button.click();
+
+    console.log(`Clicked add-to-cart for product ${id}`);
+  }
+
+  async waitForItems() {
+    await browser.waitUntil(
+      async () => {
+        const items = await this.displayedInventoryItems;
+
+        return items.length > 0 && (await items[0].isDisplayed());
+      },
+      {
+        timeout: 5000,
+        timeoutMsg: 'No inventory items appeared on the store page',
+      },
+    );
   }
 
   getItemNameLink(item: WebdriverIO.Element) {
@@ -14,7 +56,22 @@ class InventoryItem {
   }
 
   getById(id: string) {
-    return $(`div[data-test="inventory-item"][data-test-item-id="${id}"]`);
+    return $(`[data-test-item-id="inventory-item-${id}"]`);
+  }
+
+  //Extract once, dont need to repeat for cart items
+  async getDisplayedItemIds(): Promise<string[]> {
+    const items = await this.displayedInventoryItems;
+
+    return await items.map(async (item) => {
+      const fullId = await item.getAttribute('data-test-item-id');
+
+      if (!fullId || !fullId.startsWith('inventory-item-')) {
+        throw new Error(`Invalid inventory item ID: ${fullId}`);
+      }
+
+      return fullId.replace('inventory-item-', '');
+    });
   }
 
   // Open the item's details by clicking its name
