@@ -39,7 +39,7 @@ class CartItem {
     return this.getById(id).$(`[data-test="quantity-item-${id}"]`);
   }
 
-  async getDisplayedItemIds(): Promise<string[]> {
+  async getDisplayedItemIds() {
     const items = await this.displayedCartItems;
 
     return await items.map(async (item) => {
@@ -64,21 +64,12 @@ class CartItem {
 
     return quantity;
   }
-
   async getTotalQuantity() {
-    const items = await this.displayedCartItems;
+    const ids = await this.getDisplayedItemIds();
     let total = 0;
 
-    for (const item of items) {
-      const quantityText = await item.$('[data-test^="quantity-item-"]').getText();
-
-      const quantity = Number(quantityText);
-
-      if (!Number.isInteger(quantity) || quantity < 1) {
-        throw new Error(`Invalid cart item quantity: ${quantityText}`);
-      }
-
-      total += quantity;
+    for (const id of ids) {
+      total += await this.getQuantityById(id);
     }
 
     return total;
