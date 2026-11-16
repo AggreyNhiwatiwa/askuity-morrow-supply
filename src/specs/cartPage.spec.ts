@@ -3,6 +3,7 @@ import storePage from '../pages/storePage';
 import { loginAsStandardUser } from '../helpers/authenticationHelper';
 import inventoryItem from '../components/inventoryItem';
 import cartItem from '../components/cartItem';
+import navBar from '../components/navBar';
 
 describe('Cart Page', () => {
   beforeEach(async () => {
@@ -14,12 +15,18 @@ describe('Cart Page', () => {
     expect(await cartPage.isEmpty()).toBe(true);
   });
 
-  //Can use the cart button to navigate to the cart page, assert that we are on the cart page
   // Irrespective of whether its empty or not
   //Issue, caart page has no highlighted parts
+
+  /*
+   * The issue is that the cart page has a bug, where there is no highlight to show we are on the cart page
+   * There is also not any consistent UI between an empty cart and a cart with items.
+   * Maybe a test where it either asserts the empty cart UI or the cart with items UI.
+   * URL instead
+   */
   it('should navigate to the cart page when the cart button is clicked', async () => {
     await cartPage.goToCart();
-    expect(await cartPage.isEmpty()).toBe(true);
+    expect((await browser.getUrl()).includes('/cart')).toBe(true);
   });
 
   //In empty cart, user can click continue shopping and return to the store page
@@ -65,5 +72,39 @@ describe('Cart Page', () => {
    * This test should be independent and should first validate the number of UI items in the cart
    * It should then compare the UI count with the expected number of items added to the cart.
    *
+   * 3 validations:
+   *  1. The number of items displayed in the cart icon in the header.
+   *  2. The number of items displayed on the cart page itself.
+   *  3. Number shown in the cart page's item-count message.
+   *
+   * As we can have multiple quantities for each item, total count should reflect the sum of all quantities, not just the number of unique items.
+   *
    */
+  it('should display the correct number of items in the cart in the UI', async () => {
+    await inventoryItem.waitForItems();
+
+    const itemIds = await inventoryItem.getDisplayedItemIds();
+
+    expect(itemIds.length).toBeGreaterThan(0);
+
+    // Populate the cart
+    for (const id of itemIds) {
+      await inventoryItem.addToCartById(id);
+    }
+
+    await cartPage.goToCart();
+
+    // Calculate actual quantity from the cart items
+    const actualQuantity = await cartItem.getTotalQuantity();
+
+    // Verify navBar badge
+    await expect(navBar.cartBadge).toHaveText(actualQuantity.toString());
+
+    // Extract the quantity displayed in the cart page UI text
+    const cartCountText = await cartPage.cartItemCountText.getText();
+    const cartPageCount = Number(cartCountText.match(/\d+/)?.[0]);
+
+    // Verify cart page text matches total quantity
+    expect(cartPageCount).toBe(actualQuantity);
+  });
 });
