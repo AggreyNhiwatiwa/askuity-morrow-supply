@@ -5,12 +5,7 @@ import cartPage from '../pages/cartPage';
 import orderSummaryPage from '../pages/orderSummaryPage';
 import { addOneOfEachItemToCart, populateCartAndCalculateTotals } from '../helpers/cartHelper';
 import navBar from '../components/navBar';
-
-const CUSTOMER_DETAILS = {
-  firstName: 'Aggrey',
-  lastName: 'Test',
-  postalCode: 'A0A 0A0',
-};
+import { DEFAULT_CUSTOMER } from '../testData/customerDetails';
 
 describe('Checkout Page Tests', () => {
   beforeEach(async () => {
@@ -24,9 +19,9 @@ describe('Checkout Page Tests', () => {
       await navBar.openCart();
       await cartPage.proceedToCheckout();
       await checkoutPage.fillCustomerDetails(
-        CUSTOMER_DETAILS.firstName,
-        CUSTOMER_DETAILS.lastName,
-        CUSTOMER_DETAILS.postalCode,
+        DEFAULT_CUSTOMER.firstName,
+        DEFAULT_CUSTOMER.lastName,
+        DEFAULT_CUSTOMER.postalCode,
       );
       await checkoutPage.clickContinue();
 
@@ -39,9 +34,9 @@ describe('Checkout Page Tests', () => {
       await cartPage.proceedToCheckout();
 
       await checkoutPage.fillCustomerDetails(
-        CUSTOMER_DETAILS.firstName,
-        CUSTOMER_DETAILS.lastName,
-        CUSTOMER_DETAILS.postalCode,
+        DEFAULT_CUSTOMER.firstName,
+        DEFAULT_CUSTOMER.lastName,
+        DEFAULT_CUSTOMER.postalCode,
       );
 
       await checkoutPage.clickContinue();
@@ -49,7 +44,7 @@ describe('Checkout Page Tests', () => {
       expect(await orderSummaryPage.isLoaded()).toBe(true);
 
       //Construct the expected customer details string for verification
-      const expectedCustomerDetails = `${CUSTOMER_DETAILS.firstName} ${CUSTOMER_DETAILS.lastName} — ${CUSTOMER_DETAILS.postalCode}`;
+      const expectedCustomerDetails = `${DEFAULT_CUSTOMER.firstName} ${DEFAULT_CUSTOMER.lastName} — ${DEFAULT_CUSTOMER.postalCode}`;
 
       await expect(orderSummaryPage.customerDetails).toHaveText(expectedCustomerDetails);
     });
@@ -59,9 +54,9 @@ describe('Checkout Page Tests', () => {
       await cartPage.proceedToCheckout();
 
       await checkoutPage.fillCustomerDetails(
-        CUSTOMER_DETAILS.firstName,
-        CUSTOMER_DETAILS.lastName,
-        CUSTOMER_DETAILS.postalCode,
+        DEFAULT_CUSTOMER.firstName,
+        DEFAULT_CUSTOMER.lastName,
+        DEFAULT_CUSTOMER.postalCode,
       );
 
       await checkoutPage.clickContinue();
