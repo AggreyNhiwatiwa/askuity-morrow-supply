@@ -4,6 +4,8 @@ import { loginAsStandardUser } from '../helpers/authenticationHelper';
 import inventoryItem from '../components/inventoryItem';
 import cartItem from '../components/cartItem';
 import navBar from '../components/navBar';
+import { CartItemData } from '../types/CartItemData';
+import { calculateCartTotals } from '../helpers/priceHelper';
 
 describe('Cart Page', () => {
   beforeEach(async () => {
@@ -219,4 +221,62 @@ describe('Cart Page', () => {
       await expect(cartPage.cartItemCountText).toHaveText(new RegExp(`\\b${expectedTotal}\\b`));
     });
   }
+
+  it('should calculate the correct cart subtotal, tax and total', async () => {
+    await inventoryItem.waitForItems();
+
+    // Retrieve store product data, including prices
+    const storeItems = await inventoryItem.getDisplayedItems();
+
+    expect(storeItems.length).toBeGreaterThan(0);
+
+    // Map products by their shared IDs
+    const storeItemsById = new Map(
+      storeItems.map((item) => [item.id.replace(/^inventory-item-/, ''), item]),
+    );
+
+    // Populate the cart
+    for (const id of storeItemsById.keys()) {
+      await inventoryItem.addToCartById(id);
+    }
+
+    await cartPage.goToCart();
+
+    // Retrieve only products actually present in the cart
+    const cartIds = await cartItem.getDisplayedItemIds();
+
+    expect(cartIds.length).toBeGreaterThan(0);
+
+    const products: CartItemData[] = [];
+
+    // Combine store prices with actual cart quantities
+    for (const id of cartIds) {
+      const product = storeItemsById.get(id);
+
+      if (!product) {
+        throw new Error(`Product ${id} not found in store inventory`);
+      }
+
+      products.push({
+        ...product,
+        id,
+        quantity: await cartItem.getQuantityById(id),
+      });
+    }
+
+    // Calculate expected subtotal, tax and total
+    const expected = calculateCartTotals(products, 0.08);
+
+    console.log('Expected pricing:', expected);
+
+    // Retrieve actual values from the cart page
+    const actualSubtotal = await cartPage.getDisplayedSubtotal();
+    const actualTax = await cartPage.getDisplayedTax();
+    const actualTotal = await cartPage.getDisplayedTotal();
+
+    // Validate the cart pricing
+    expect(actualSubtotal).toBe(expected.subtotal);
+    expect(actualTax).toBe(expected.tax);
+    expect(actualTotal).toBe(expected.total);
+  });
 });

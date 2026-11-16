@@ -53,7 +53,6 @@ class CartItem {
     });
   }
 
-  //Move to cartPage
   async getQuantityById(id: string) {
     const quantityText = await this.getQuantityElement(id).getText();
     const quantity = Number(quantityText);

@@ -1,4 +1,5 @@
 import navBar from '../components/navBar';
+import { parsePrice } from '../utils/priceUtils';
 
 class CartPage {
   //Empty state
@@ -22,6 +23,30 @@ class CartPage {
 
   get cartWithItemsTitle() {
     return $('[data-test="cart-title"]');
+  }
+
+  get subtotal() {
+    return $('[data-test="cart-subtotal"]');
+  }
+
+  get taxTotal() {
+    return $('[data-test="cart-tax"]');
+  }
+
+  get cartTotal() {
+    return $('[data-test="cart-total"]');
+  }
+
+  async getDisplayedSubtotal() {
+    return parsePrice(await this.subtotal.getText());
+  }
+
+  async getDisplayedTax() {
+    return parsePrice(await this.taxTotal.getText());
+  }
+
+  async getDisplayedTotal() {
+    return parsePrice(await this.cartTotal.getText());
   }
 
   //Check cart is actually empty
