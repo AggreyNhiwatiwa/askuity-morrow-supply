@@ -37,6 +37,10 @@ class CartPage {
     return $('[data-test="cart-total"]');
   }
 
+  get proceedToCheckoutButton() {
+    return $('[data-test="checkout-button"]');
+  }
+
   async getDisplayedSubtotal() {
     return parsePrice(await this.subtotal.getText());
   }
@@ -47,6 +51,10 @@ class CartPage {
 
   async getDisplayedTotal() {
     return parsePrice(await this.cartTotal.getText());
+  }
+
+  async proceedToCheckout() {
+    await this.proceedToCheckoutButton.click();
   }
 
   //Check cart is actually empty

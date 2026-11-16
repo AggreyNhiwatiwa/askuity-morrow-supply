@@ -11,6 +11,11 @@ class NavBar {
     const count = await this.cartBadge.getText();
     return Number(count);
   }
+
+  //TODO: Ensure older tests call this helper
+  async openCart() {
+    await this.cartButton.click();
+  }
 }
 
 export default new NavBar();

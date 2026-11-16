@@ -60,6 +60,7 @@ class InventoryItem {
   }
 
   //Extract once, dont need to repeat for cart items
+  //Not as DOM safe
   async getDisplayedItemIds(): Promise<string[]> {
     const items = await this.displayedInventoryItems;
 
