@@ -104,61 +104,6 @@ describe('Cart Page', () => {
     expect(cartPageCount).toBe(actualQuantity);
   });
 
-  it('should update cart quantities when items are increased', async () => {
-    await inventoryItem.waitForItems();
-
-    const itemIds = await inventoryItem.getDisplayedItemIds();
-
-    expect(itemIds.length).toBeGreaterThan(0);
-
-    // Populate the cart
-    for (const id of itemIds) {
-      await inventoryItem.addToCartById(id);
-    }
-
-    await cartPage.goToCart();
-
-    // Get IDs of items actually present in the cart
-    const cartItems = await cartItem.displayedCartItems;
-
-    const cartItemIds = await cartItems.map(async (item) => {
-      const fullId = await item.getAttribute('data-test-item-id');
-
-      if (!fullId?.startsWith('cart-item-')) {
-        throw new Error(`Invalid cart item ID: ${fullId}`);
-      }
-
-      return fullId.replace('cart-item-', '');
-    });
-
-    expect(cartItemIds.length).toBeGreaterThan(0);
-
-    // Get initial total quantity
-    const initialQuantity = await cartItem.getTotalQuantity();
-
-    // Increase each cart item by one
-    for (const id of cartItemIds) {
-      const previousQuantity = await cartItem.getQuantityById(id);
-
-      await cartItem.increaseQuantityById(id);
-
-      // Verify the individual quantity increased
-      await expect(cartItem.getQuantityElement(id)).toHaveText((previousQuantity + 1).toString());
-    }
-
-    // Each cart item was increased by one
-    const expectedQuantity = initialQuantity + cartItemIds.length;
-
-    // Verify the total quantity increased correctly
-    expect(await cartItem.getTotalQuantity()).toBe(expectedQuantity);
-
-    // Verify the header badge updates
-    await expect(navBar.cartBadge).toHaveText(expectedQuantity.toString());
-
-    // Verify the cart page count updates
-    await expect(cartPage.cartItemCountText).toHaveText(new RegExp(`\\b${expectedQuantity}\\b`));
-  });
-
   const quantityCases = [
     { action: 'increase', change: 1 },
     { action: 'decrease', change: -1 },
