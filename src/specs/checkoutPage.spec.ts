@@ -1,77 +1,70 @@
 import { expect } from '@wdio/globals';
 import { loginAsStandardUser } from '../helpers/authenticationHelper';
+import { prepareCheckout } from '../helpers/checkoutHelper';
 import checkoutPage from '../pages/checkoutPage';
 import cartPage from '../pages/cartPage';
 import orderSummaryPage from '../pages/orderSummaryPage';
-import { addOneOfEachItemToCart, populateCartAndCalculateTotals } from '../helpers/cartHelper';
-import navBar from '../components/navBar';
+import storePage from '../pages/storePage';
+import { populateCartAndCalculateTotals } from '../helpers/cartHelper';
 import { DEFAULT_CUSTOMER } from '../testData/customerDetails';
 
 describe('Checkout Page Tests', () => {
   beforeEach(async () => {
     await loginAsStandardUser();
-    await checkoutPage.isLoaded();
+    await storePage.isLoaded();
   });
 
-  describe('Checkout Tests', () => {
-    it('should proceed to the checkout when all customer details are filled', async () => {
-      await addOneOfEachItemToCart();
-      await navBar.goToCart();
-      await cartPage.proceedToCheckout();
-      await checkoutPage.fillCustomerDetails(
-        DEFAULT_CUSTOMER.firstName,
-        DEFAULT_CUSTOMER.lastName,
-        DEFAULT_CUSTOMER.postalCode,
-      );
-      await checkoutPage.continueToSummary();
+  async function submitCustomerDetails() {
+    await checkoutPage.fillCustomerDetails(
+      DEFAULT_CUSTOMER.firstName,
+      DEFAULT_CUSTOMER.lastName,
+      DEFAULT_CUSTOMER.postalCode,
+    );
 
-      // Verify checkout summary is displayed
-      expect(await orderSummaryPage.isLoaded()).toBe(true);
-    });
-    it('should display submitted customer details on the order summary', async () => {
-      await addOneOfEachItemToCart();
-      await navBar.goToCart();
-      await cartPage.proceedToCheckout();
+    await checkoutPage.continueToSummary();
+    await orderSummaryPage.isLoaded();
+  }
 
-      await checkoutPage.fillCustomerDetails(
-        DEFAULT_CUSTOMER.firstName,
-        DEFAULT_CUSTOMER.lastName,
-        DEFAULT_CUSTOMER.postalCode,
-      );
+  it('should proceed to the order summary with valid customer details', async () => {
+    await prepareCheckout();
+    await submitCustomerDetails();
 
-      await checkoutPage.continueToSummary();
+    console.info('[CHECKOUT] Successfully reached order summary');
+  });
 
-      expect(await orderSummaryPage.isLoaded()).toBe(true);
+  it('should display submitted customer details on the order summary', async () => {
+    await prepareCheckout();
+    await submitCustomerDetails();
 
-      //Construct the expected customer details string for verification
-      const expectedCustomerDetails = `${DEFAULT_CUSTOMER.firstName} ${DEFAULT_CUSTOMER.lastName} — ${DEFAULT_CUSTOMER.postalCode}`;
+    const expectedCustomerDetails = `${DEFAULT_CUSTOMER.firstName} ${DEFAULT_CUSTOMER.lastName} — ${DEFAULT_CUSTOMER.postalCode}`;
 
-      await expect(orderSummaryPage.customerDetails).toHaveText(expectedCustomerDetails);
-    });
-    it('should calculate the correct order subtotal, tax and total', async () => {
-      const expected = await populateCartAndCalculateTotals();
+    await expect(orderSummaryPage.customerDetails).toHaveText(expectedCustomerDetails);
 
-      await cartPage.proceedToCheckout();
+    console.info(`[CHECKOUT] Verified customer details: ${expectedCustomerDetails}`);
+  });
 
-      await checkoutPage.fillCustomerDetails(
-        DEFAULT_CUSTOMER.firstName,
-        DEFAULT_CUSTOMER.lastName,
-        DEFAULT_CUSTOMER.postalCode,
-      );
+  it('should calculate the correct order subtotal, tax and total', async () => {
+    const expected = await populateCartAndCalculateTotals();
 
-      await checkoutPage.continueToSummary();
+    // The pricing helper leaves us on the cart page
+    await cartPage.proceedToCheckout();
+    await checkoutPage.isLoaded();
 
-      expect(await orderSummaryPage.isLoaded()).toBe(true);
+    await submitCustomerDetails();
 
-      // Retrieve actual values from order summary UI
-      const actualSubtotal = await orderSummaryPage.getDisplayedSubtotal();
-      const actualTax = await orderSummaryPage.getDisplayedTax();
-      const actualTotal = await orderSummaryPage.getDisplayedTotal();
+    const actual = {
+      subtotal: await orderSummaryPage.getDisplayedSubtotal(),
+      tax: await orderSummaryPage.getDisplayedTax(),
+      total: await orderSummaryPage.getDisplayedTotal(),
+    };
 
-      // Validate order summary pricing
-      expect(actualSubtotal).toBe(expected.subtotal);
-      expect(actualTax).toBe(expected.tax);
-      expect(actualTotal).toBe(expected.total);
-    });
+    console.info(
+      `[CHECKOUT] Pricing: expected=${JSON.stringify(expected)}, ` +
+        `actual=${JSON.stringify(actual)}`,
+    );
+
+    expect(actual.subtotal).toBe(expected.subtotal);
+    expect(actual.tax).toBe(expected.tax);
+    expect(actual.total).toBe(expected.total);
   });
 });
