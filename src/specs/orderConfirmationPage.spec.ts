@@ -18,7 +18,7 @@ describe('Order Confirmation Page Tests', () => {
     await addOneOfEachItemToCart();
 
     // Navigate to checkout
-    await navBar.clickCartButton();
+    await navBar.goToCart();
     await cartPage.proceedToCheckout();
 
     // Enter customer details
