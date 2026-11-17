@@ -1,6 +1,15 @@
 import { parsePrice } from '../utils/priceUtils';
 
 class OrderSummaryPage {
+  /*
+   * Using button instead of title as the title data-test attribute
+   * is also present on the checkout page
+   */
+  async isLoaded() {
+    await this.finishButton.waitForDisplayed({
+      timeoutMsg: 'Order Summary page failed to load',
+    });
+  }
   get orderSummaryTitle() {
     return $('[data-test="checkout-title"]');
   }
@@ -35,10 +44,6 @@ class OrderSummaryPage {
 
   async getDisplayedTotal() {
     return parsePrice(await this.cartTotal.getText());
-  }
-
-  async isLoaded() {
-    return await this.orderSummaryTitle.isDisplayed();
   }
 
   async clickFinish() {

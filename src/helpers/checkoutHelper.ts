@@ -1,5 +1,6 @@
 import type { CustomerDetails } from '../types/CustomerDetails';
-import inventoryItem from '../components/inventoryItem';
+import { browser } from '@wdio/globals';
+import cartItem from '../components/cartItem';
 import navBar from '../components/navBar';
 import cartPage from '../pages/cartPage';
 import checkoutPage from '../pages/checkoutPage';
@@ -7,29 +8,45 @@ import orderSummaryPage from '../pages/orderSummaryPage';
 import orderConfirmationPage from '../pages/orderConfirmationPage';
 import { addOneOfEachItemToCart } from './cartHelper';
 
-export async function completeCheckout(customer: CustomerDetails) {
-  // Populate cart
-  await inventoryItem.waitForItems();
-  await addOneOfEachItemToCart();
+// Navigate to checkout using the current cart contents
+export async function navigateToCheckout() {
+  await navBar.goToCart();
 
-  // Navigate to checkout
-  await navBar.openCart();
+  await browser.waitUntil(async () => (await cartItem.getCount()) > 0, {
+    timeout: 5000,
+    timeoutMsg: 'Cannot proceed to checkout with an empty cart',
+  });
+
   await cartPage.proceedToCheckout();
+  await checkoutPage.isLoaded();
+}
 
-  // Enter customer details
+// Submit customer details and navigate to the order summary
+export async function submitCustomerDetails(customer: CustomerDetails) {
   await checkoutPage.fillCustomerDetails(
     customer.firstName,
     customer.lastName,
     customer.postalCode,
   );
 
-  // Proceed to order summary
-  await checkoutPage.clickContinue();
+  await checkoutPage.continueToSummary();
   await orderSummaryPage.isLoaded();
+}
 
-  // Complete order
+// Complete the checkout process through order confirmation
+export async function completeCheckout(customer: CustomerDetails) {
+  await addOneOfEachItemToCart();
+
+  await navigateToCheckout();
+  await submitCustomerDetails(customer);
+
   await orderSummaryPage.clickFinish();
-
-  // Wait for order confirmation
   await orderConfirmationPage.isLoaded();
+
+  console.info('[CHECKOUT] Order completed successfully');
+}
+
+export async function prepareCheckout() {
+  await addOneOfEachItemToCart();
+  await navigateToCheckout();
 }

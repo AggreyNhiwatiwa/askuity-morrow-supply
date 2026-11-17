@@ -12,8 +12,7 @@ class NavBar {
     return Number(count);
   }
 
-  //TODO: Ensure older tests call this helper
-  async openCart() {
+  async goToCart() {
     await this.cartButton.click();
   }
 }

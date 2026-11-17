@@ -1,16 +1,14 @@
 import { browser } from '@wdio/globals';
 
 class LoginPage {
-  //Helpers
-  async open() {
-    await browser.url('/login');
-  }
-
-  //waitForDisplayed enables auto-retries on everything that uses the helper
   async isLoaded() {
     return this.title.waitForDisplayed({
       timeoutMsg: 'The Login Page failed to load',
     });
+  }
+
+  async open() {
+    await browser.url('/login');
   }
 
   async login(username: string, password: string) {
@@ -19,29 +17,24 @@ class LoginPage {
     await this.loginButton.click();
   }
 
-  //Locators
-
-  //Recommended WDIO text selector strategy for unique text elements on the page
   get title() {
-    return $('role/heading[name="A good place to begin."]');
+    return $('[data-test="login-title"]');
   }
 
-  //Using accessibility based selector here, as the placeholder text in the Input element is a HTML attribute, not text
-  //Despite the Inputs not having an explicitly defined aria-label, it gets computed from the associated label
   get usernameInput() {
-    return $('aria/Username');
+    return $('[data-test="username"]');
   }
 
   get passwordInput() {
-    return $('aria/Password');
+    return $('[data-test="password"]');
   }
 
   get loginButton() {
-    return $('button=Login');
+    return $('[data-test="login-button"]');
   }
 
   get errorMessageBox() {
-    return $('role/alert'); //Limitations on native mobile, as accessibility Ids are needed there
+    return $('[data-test="login-error-message"]');
   }
 }
 

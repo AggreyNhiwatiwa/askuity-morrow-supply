@@ -1,4 +1,14 @@
 class CheckoutPage {
+  /*
+   * Using button instead of title as the title data-test attribute
+   * is also present on the order summary page
+   */
+  async isLoaded() {
+    await this.continueButton.waitForDisplayed({
+      timeoutMsg: 'Checkout page failed to load',
+    });
+  }
+
   get checkoutTitle() {
     return $('[data-test="checkout-title"]');
   }
@@ -19,10 +29,6 @@ class CheckoutPage {
     return $('[data-test="continue-to-summary"]');
   }
 
-  async isLoaded() {
-    return this.checkoutTitle.isDisplayed();
-  }
-
   async enterFirstName(firstName: string) {
     await this.firstNameInput.setValue(firstName);
   }
@@ -35,7 +41,7 @@ class CheckoutPage {
     await this.postalCodeInput.setValue(postalCode);
   }
 
-  async clickContinue() {
+  async continueToSummary() {
     await this.continueButton.click();
   }
 
