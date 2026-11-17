@@ -23,7 +23,16 @@ Note: There are some lengthy comments and logs. I known logs were mentioned in t
 ## Running the tests
 - There are many configs present, due to my testing of new code on a granular level.
 - References to ffmpeg@7 are for the best compatability with the WDIO DevTools Service for test recording.
+- To run all the tests, use `npm run test:all`
+- This will run the tests on the following 6 configurations:
+  - Desktop
+  - Mobile Small
+  - Mobile Medium
+  - Mobile Large
+  - Tablet
+  - Foldable phone
 
+Foldable
 ## Git
 - I cloned the project and maintained the git history so that my changes could be easily seen.
 - I have also kept my branches up, and did not squash merge any PRs to provide a more comprehensive git history.
