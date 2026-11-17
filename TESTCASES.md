@@ -12,13 +12,15 @@ List of Test Cases:
 
 ### Tests that are expected to fail!
 
-- should sort inventory items by High-Low
-- should display all added items in the cart
+- should sort inventory items by High-Low due to this defect:
+- should display all added items in the cart due to this defect:
 -
 
 ### LoginPage
 
-- should allow an authorized user to login with valid credentials
+- should allow an authorized shopper user to login with valid credentials
+- should allow an authorized image variation user to login with valid credentials
+- should allow an authorized cart badge user to login with valid credentials
 - should not allow a locked out user to login with valid credentials
 
 ### StorePage

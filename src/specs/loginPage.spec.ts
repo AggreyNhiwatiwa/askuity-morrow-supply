@@ -10,21 +10,37 @@ describe('Login Page Tests', () => {
     await loginPage.open();
   });
 
-  /*
-  Correct URL does not guarantee a page has actually rendered (what the user sees)
-  Technically, there is redundancy here as the beforeEach already waits for the page to load,
-  but this test explicitly asserts it for clarity and visibility to the user.
-  If more users are added, I'd rather have the redundancy once here than in each user login method to assert a page load.
-  */
   it('should display the login page', async () => {
     await expect(loginPage.title).toBeDisplayed();
   });
 
-  it('should allow an authorized user to login with valid credentials', async () => {
+  it('should allow an authorized shopper user to login with valid credentials', async () => {
     const username = process.env.SHOPPER_USERNAME;
 
     if (!username || !password) {
       throw new Error('SHOPPER_USERNAME or PASSWORD is missing in the .env file');
+    }
+
+    await loginPage.login(username, password);
+    await expect(storePage.title).toBeDisplayed();
+  });
+
+  it('should allow an authorized image variation user to login with valid credentials', async () => {
+    const username = process.env.IMAGE_VARIATION_USERNAME;
+
+    if (!username || !password) {
+      throw new Error('IMAGE_VARIATION_USERNAME or PASSWORD is missing in the .env file');
+    }
+
+    await loginPage.login(username, password);
+    await expect(storePage.title).toBeDisplayed();
+  });
+
+  it('should allow an authorized cart badge user to login with valid credentials', async () => {
+    const username = process.env.CART_BADGE_USERNAME;
+
+    if (!username || !password) {
+      throw new Error('CART_BADGE_USERNAME or PASSWORD is missing in the .env file');
     }
 
     await loginPage.login(username, password);
