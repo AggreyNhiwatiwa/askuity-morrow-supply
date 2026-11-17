@@ -21,8 +21,9 @@
     "webdriverio": "^10.0.0"
   },
   "scripts": {
+    "test:all": "result=0; npm run test:desktop || result=1; npm run test:mobile:all || result=1; exit \"$result\"",
     "wdio": "wdio run ./wdio.conf.ts",
-    "test:e2e": "PATH=\"$(brew --prefix ffmpeg@7)/bin:$PATH\" wdio run ./wdio.conf.ts",
+    "test:desktop": "PATH=\"$(brew --prefix ffmpeg@7)/bin:$PATH\" wdio run ./wdio.conf.ts",
     "test:mobile": "PATH=\"$(brew --prefix ffmpeg@7)/bin:$PATH\" TEST_TARGET=mobile wdio run ./wdio.conf.ts",
     "test:mobile:mobile-s": "TEST_PROFILE=mobile-s npm run test:mobile",
     "test:mobile:mobile-m": "TEST_PROFILE=mobile-m npm run test:mobile",
@@ -31,12 +32,12 @@
     "test:mobile:foldable": "TEST_PROFILE=foldable npm run test:mobile",
     "test:mobile:all": "result=0; for profile in mobile-s mobile-m mobile-l tablet foldable; do DEVTOOLS_MODE=trace TEST_PROFILE=\"$profile\" npm run test:mobile || result=1; done; exit \"$result\"",
     "test:mobile:login:all": "result=0; for profile in mobile-s mobile-m mobile-l tablet foldable; do DEVTOOLS_MODE=trace TEST_PROFILE=\"$profile\" npm run test:mobile -- --spec ./src/specs/loginPage.spec.ts || result=1; done; exit \"$result\"",
-    "test:login": "npm run test:e2e -- --spec ./src/specs/loginPage.spec.ts",
-    "test:cart": "npm run test:e2e -- --spec ./src/specs/cartPage.spec.ts",
-    "test:store": "npm run test:e2e -- --spec ./src/specs/storePage.spec.ts",
-    "test:checkout": "npm run test:e2e -- --spec ./src/specs/checkoutPage.spec.ts",
-    "test:order-summary": "npm run test:e2e -- --spec ./src/specs/orderSummaryPage.spec.ts",
-    "test:order-confirmation": "npm run test:e2e -- --spec ./src/specs/orderConfirmationPage.spec.ts"
+    "test:login": "npm run test:desktop -- --spec ./src/specs/loginPage.spec.ts",
+    "test:cart": "npm run test:desktop -- --spec ./src/specs/cartPage.spec.ts",
+    "test:store": "npm run test:desktop -- --spec ./src/specs/storePage.spec.ts",
+    "test:checkout": "npm run test:desktop -- --spec ./src/specs/checkoutPage.spec.ts",
+    "test:order-summary": "npm run test:desktop -- --spec ./src/specs/orderSummaryPage.spec.ts",
+    "test:order-confirmation": "npm run test:desktop -- --spec ./src/specs/orderConfirmationPage.spec.ts"
   },
   "dependencies": {
     "fluent-ffmpeg": "^2.1.3"
