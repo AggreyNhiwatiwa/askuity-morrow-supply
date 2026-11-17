@@ -1,4 +1,3 @@
-import inventoryItem from '../components/inventoryItem';
 import navBar from '../components/navBar';
 import cartPage from '../pages/cartPage';
 import checkoutPage from '../pages/checkoutPage';
@@ -12,31 +11,28 @@ import { DEFAULT_CUSTOMER } from '../testData/customerDetails';
 describe('Order Confirmation Page Tests', () => {
   beforeEach(async () => {
     await loginAsStandardUser();
+    await storePage.isLoaded();
 
-    // Populate cart
-    await inventoryItem.waitForItems();
     await addOneOfEachItemToCart();
 
-    // Navigate to checkout
     await navBar.goToCart();
+    await cartPage.isLoaded();
     await cartPage.proceedToCheckout();
+    await checkoutPage.isLoaded();
 
-    // Enter customer details
     await checkoutPage.fillCustomerDetails(
       DEFAULT_CUSTOMER.firstName,
       DEFAULT_CUSTOMER.lastName,
       DEFAULT_CUSTOMER.postalCode,
     );
 
-    // Proceed to order summary
     await checkoutPage.continueToSummary();
-    expect(await orderSummaryPage.isLoaded()).toBe(true);
+    await orderSummaryPage.isLoaded();
 
-    // Complete the order
     await orderSummaryPage.clickFinish();
+    await orderConfirmationPage.isLoaded();
 
-    // Verify order confirmation page has loaded
-    expect(await orderConfirmationPage.isLoaded()).toBe(true);
+    console.info('[CHECKOUT] Order confirmation page loaded');
   });
 
   it('clicking the continue shopping button should take the user to the store page', async () => {
