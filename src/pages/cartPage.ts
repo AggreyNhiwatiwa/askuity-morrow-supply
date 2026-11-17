@@ -1,6 +1,17 @@
 import { parsePrice } from '../utils/priceUtils';
 
 class CartPage {
+  /*
+   * Waits for either the empty or populated cart state, as they use different UI elements.
+   * There are no shared UI elements between the empty and populated cart states.
+   * waitForDisplayed() with a combined selector could also work here, but may select a hidden element
+   * or cause strict selector violations if both cart states exist in the DOM.
+   */
+  async isLoaded() {
+    await browser.waitUntil(async () => (await this.isEmpty()) || (await this.hasItems()), {
+      timeoutMsg: 'Cart page failed to load',
+    });
+  }
   get cartEmptyTitle() {
     return $('[data-test="cart-empty-title"]');
   }
@@ -13,7 +24,6 @@ class CartPage {
     return $('[data-test="cart-title"]');
   }
 
-  //This button is actually a styled link
   get continueShoppingButton() {
     return $('[data-test="continue-shopping"]');
   }

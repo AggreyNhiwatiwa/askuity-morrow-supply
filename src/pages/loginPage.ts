@@ -1,14 +1,14 @@
 import { browser } from '@wdio/globals';
 
 class LoginPage {
-  async open() {
-    await browser.url('/login');
-  }
-
   async isLoaded() {
     return this.title.waitForDisplayed({
       timeoutMsg: 'The Login Page failed to load',
     });
+  }
+
+  async open() {
+    await browser.url('/login');
   }
 
   async login(username: string, password: string) {

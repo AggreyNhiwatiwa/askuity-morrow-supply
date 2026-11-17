@@ -1,4 +1,10 @@
 class OrderConfirmationPage {
+  async isLoaded() {
+    await this.confirmationTitle.waitForDisplayed({
+      timeoutMsg: 'Order Confirmation page failed to load',
+    });
+  }
+
   get confirmationTitle() {
     return $('[data-test="checkout-success-title"]');
   }
@@ -9,10 +15,6 @@ class OrderConfirmationPage {
 
   get continueShoppingButton() {
     return $('[data-test="back-to-home"]');
-  }
-
-  async isLoaded() {
-    return this.confirmationTitle.isDisplayed();
   }
 
   async clickContinueShoppingButton() {

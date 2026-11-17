@@ -1,4 +1,14 @@
 class CheckoutPage {
+  /*
+   * Using button instead of title as the title data-test attribute
+   * is also present on the order summary page
+   */
+  async isLoaded() {
+    await this.continueButton.waitForDisplayed({
+      timeoutMsg: 'Checkout page failed to load',
+    });
+  }
+
   get checkoutTitle() {
     return $('[data-test="checkout-title"]');
   }
@@ -17,10 +27,6 @@ class CheckoutPage {
 
   get continueButton() {
     return $('[data-test="continue-to-summary"]');
-  }
-
-  async isLoaded() {
-    return this.checkoutTitle.isDisplayed();
   }
 
   async enterFirstName(firstName: string) {
