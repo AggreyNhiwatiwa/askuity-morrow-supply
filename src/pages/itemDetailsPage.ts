@@ -1,6 +1,6 @@
 class ItemDetailsPage {
   get category() {
-    return $('div[data-test="product-category"]');
+    return $('[data-test="product-category"]');
   }
 }
 
