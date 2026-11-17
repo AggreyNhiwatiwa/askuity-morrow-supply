@@ -17,7 +17,7 @@ describe('Login Page Tests', () => {
   If more users are added, I'd rather have the redundancy once here than in each user login method to assert a page load.
   */
   it('should display the login page', async () => {
-    expect(await loginPage.isLoaded()).toBe(true);
+    await expect(loginPage.title).toBeDisplayed();
   });
 
   it('should allow an authorized user to login with valid credentials', async () => {
@@ -28,7 +28,7 @@ describe('Login Page Tests', () => {
     }
 
     await loginPage.login(username, password);
-    expect(await storePage.isLoaded()).toBe(true); //This could technically be await storePage.isLoaded();, but I want the visible assertion here
+    await expect(storePage.title).toBeDisplayed();
   });
 
   it('should not allow a locked out user to login with valid credentials', async () => {
