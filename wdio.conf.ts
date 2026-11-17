@@ -1,3 +1,47 @@
+//TEST_TARGET determines whether I run mobile or desktop chrome
+const target = process.env.TEST_TARGET ?? 'desktop';
+
+if (!['desktop', 'mobile'].includes(target)) {
+  throw new Error(`Unsupported TEST_TARGET: ${target}`);
+}
+
+const mobileViewports = {
+  'mobile-s': {
+    width: 320,
+    height: 600,
+    pixelRatio: 2,
+  },
+  'mobile-m': {
+    width: 375,
+    height: 800,
+    pixelRatio: 2,
+  },
+  'mobile-l': {
+    width: 425,
+    height: 930,
+    pixelRatio: 2,
+  },
+  tablet: {
+    width: 768,
+    height: 1050,
+    pixelRatio: 2,
+  },
+  foldable: {
+    width: 344,
+    height: 882,
+    pixelRatio: 2,
+  },
+} as const;
+
+//If mobile profile not specified, it will default to a medium mobile profile
+const profileName = process.env.TEST_PROFILE ?? 'mobile-m';
+
+if (!(profileName in mobileViewports)) {
+  throw new Error(`Unsupported TEST_PROFILE: ${profileName}`);
+}
+
+const viewport = mobileViewports[profileName as keyof typeof mobileViewports];
+
 export const config: WebdriverIO.Config = {
   //
   // ====================
@@ -43,15 +87,29 @@ export const config: WebdriverIO.Config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://saucelabs.com/platform/platform-configurator
   //
+
   capabilities: [
     {
       browserName: 'chrome',
+
+      ...(target === 'mobile' && {
+        'goog:chromeOptions': {
+          mobileEmulation: {
+            deviceMetrics: {
+              width: viewport.width,
+              height: viewport.height,
+              pixelRatio: viewport.pixelRatio,
+              touch: true,
+            },
+          },
+        },
+      }),
     },
   ],
 
