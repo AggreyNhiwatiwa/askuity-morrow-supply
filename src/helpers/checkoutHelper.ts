@@ -13,7 +13,7 @@ export async function completeCheckout(customer: CustomerDetails) {
   await addOneOfEachItemToCart();
 
   // Navigate to checkout
-  await navBar.openCart();
+  await navBar.clickCartButton();
   await cartPage.proceedToCheckout();
 
   // Enter customer details

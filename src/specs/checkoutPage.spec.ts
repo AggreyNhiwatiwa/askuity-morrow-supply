@@ -16,7 +16,7 @@ describe('Checkout Page Tests', () => {
   describe('Checkout Tests', () => {
     it('should proceed to the checkout when all customer details are filled', async () => {
       await addOneOfEachItemToCart();
-      await navBar.openCart();
+      await navBar.clickCartButton();
       await cartPage.proceedToCheckout();
       await checkoutPage.fillCustomerDetails(
         DEFAULT_CUSTOMER.firstName,
@@ -30,7 +30,7 @@ describe('Checkout Page Tests', () => {
     });
     it('should display submitted customer details on the order summary', async () => {
       await addOneOfEachItemToCart();
-      await navBar.openCart();
+      await navBar.clickCartButton();
       await cartPage.proceedToCheckout();
 
       await checkoutPage.fillCustomerDetails(
