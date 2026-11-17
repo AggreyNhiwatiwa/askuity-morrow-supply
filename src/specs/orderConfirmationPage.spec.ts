@@ -29,7 +29,7 @@ describe('Order Confirmation Page Tests', () => {
     );
 
     // Proceed to order summary
-    await checkoutPage.clickContinue();
+    await checkoutPage.continueToSummary();
     expect(await orderSummaryPage.isLoaded()).toBe(true);
 
     // Complete the order

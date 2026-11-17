@@ -24,7 +24,7 @@ export async function completeCheckout(customer: CustomerDetails) {
   );
 
   // Proceed to order summary
-  await checkoutPage.clickContinue();
+  await checkoutPage.continueToSummary();
   await orderSummaryPage.isLoaded();
 
   // Complete order

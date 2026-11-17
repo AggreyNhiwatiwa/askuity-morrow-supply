@@ -35,7 +35,7 @@ class CheckoutPage {
     await this.postalCodeInput.setValue(postalCode);
   }
 
-  async clickContinue() {
+  async continueToSummary() {
     await this.continueButton.click();
   }
 

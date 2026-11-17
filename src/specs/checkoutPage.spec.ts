@@ -23,7 +23,7 @@ describe('Checkout Page Tests', () => {
         DEFAULT_CUSTOMER.lastName,
         DEFAULT_CUSTOMER.postalCode,
       );
-      await checkoutPage.clickContinue();
+      await checkoutPage.continueToSummary();
 
       // Verify checkout summary is displayed
       expect(await orderSummaryPage.isLoaded()).toBe(true);
@@ -39,7 +39,7 @@ describe('Checkout Page Tests', () => {
         DEFAULT_CUSTOMER.postalCode,
       );
 
-      await checkoutPage.clickContinue();
+      await checkoutPage.continueToSummary();
 
       expect(await orderSummaryPage.isLoaded()).toBe(true);
 
@@ -59,7 +59,7 @@ describe('Checkout Page Tests', () => {
         DEFAULT_CUSTOMER.postalCode,
       );
 
-      await checkoutPage.clickContinue();
+      await checkoutPage.continueToSummary();
 
       expect(await orderSummaryPage.isLoaded()).toBe(true);
 
