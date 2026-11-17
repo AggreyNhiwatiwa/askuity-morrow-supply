@@ -1,12 +1,10 @@
 import { browser } from '@wdio/globals';
 
 class LoginPage {
-  //Helpers
   async open() {
     await browser.url('/login');
   }
 
-  //waitForDisplayed enables auto-retries on everything that uses the helper
   async isLoaded() {
     return this.title.waitForDisplayed({
       timeoutMsg: 'The Login Page failed to load',
@@ -18,8 +16,6 @@ class LoginPage {
     await this.passwordInput.setValue(password);
     await this.loginButton.click();
   }
-
-  //Locators
 
   //Recommended WDIO text selector strategy for unique text elements on the page
   get title() {
