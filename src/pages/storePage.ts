@@ -1,8 +1,6 @@
 import InventoryItem from '../components/inventoryItem';
 class StorePage {
   readonly inventoryItem = InventoryItem;
-  //No open function, as the StorePage is only reachable after login unless I implement session persistence
-  //Added getDisplayedItemsCountFromText to retrieve the item count from the displayed text
 
   async isLoaded() {
     return this.title.waitForDisplayed({
@@ -11,26 +9,21 @@ class StorePage {
   }
 
   get title() {
-    return $('role/heading[name="Good things, chosen well."]');
-  }
-
-  get logoutButton() {
-    return $('button=Logout');
+    return $('[data-test="inventory-title"]');
   }
 
   get categoryFilterDropdown() {
-    return $('select[data-test="filter-category"]');
+    return $('[data-test="filter-category"]');
   }
 
   get sortDropdown() {
-    return $('select[data-test="sort-select"]');
+    return $('[data-test="sort-select"]');
   }
 
   /*
-  Dynamically getting the itemcount from the number of items displayed text
-  Should match the actual count of items displayed on the page
-  Having to use a partial text selector to locate the item count
-  */
+   * Partial text selector for the "X items to explore" text, which should match the real tile count
+   * There is no data-test attribute for this.
+   */
   get noItemsDisplayedText() {
     return $('p*=items to explore');
   }
