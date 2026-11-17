@@ -29,7 +29,7 @@ export async function populateCartAndCalculateTotals() {
   // Populate cart
   await addOneOfEachItemToCart();
 
-  await navBar.clickCartButton();
+  await navBar.goToCart();
 
   // Retrieve actual cart products and quantities
   const cartIds = await cartItem.getDisplayedItemIds();

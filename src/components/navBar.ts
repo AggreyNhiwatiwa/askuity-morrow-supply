@@ -12,7 +12,7 @@ class NavBar {
     return Number(count);
   }
 
-  async clickCartButton() {
+  async goToCart() {
     await this.cartButton.click();
   }
 }

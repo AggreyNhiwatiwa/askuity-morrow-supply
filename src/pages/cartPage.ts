@@ -1,4 +1,3 @@
-import navBar from '../components/navBar';
 import { parsePrice } from '../utils/priceUtils';
 
 class CartPage {
@@ -61,10 +60,6 @@ class CartPage {
 
   async hasItems() {
     return await this.cartWithItemsTitle.isDisplayed();
-  }
-
-  async goToCart() {
-    await navBar.cartButton.click();
   }
 
   async continueShopping() {

@@ -13,7 +13,7 @@ describe('Cart Page', () => {
   });
   //This works assuming nothing is in the cart (maybe beforelogic to confirm its empty beforehand)
   it('should display an empty cart title and message when no items are in the cart', async () => {
-    await cartPage.goToCart();
+    await navBar.goToCart();
     expect(await cartPage.isEmpty()).toBe(true);
   });
 
@@ -27,13 +27,13 @@ describe('Cart Page', () => {
    * URL instead
    */
   it('should navigate to the cart page when the cart button is clicked', async () => {
-    await cartPage.goToCart();
+    await navBar.goToCart();
     expect((await browser.getUrl()).includes('/cart')).toBe(true);
   });
 
   //In empty cart, user can click continue shopping and return to the store page
   it('should navigate to the store page when the continue shopping button is clicked when the cart is empty', async () => {
-    await cartPage.goToCart();
+    await navBar.goToCart();
     expect(await cartPage.isEmpty()).toBe(true);
     await cartPage.continueShopping();
     expect(await storePage.isLoaded()).toBe(true);
@@ -56,7 +56,7 @@ describe('Cart Page', () => {
       await inventoryItem.addToCartById(id);
     }
 
-    await cartPage.goToCart();
+    await navBar.goToCart();
 
     await expect(cartItem.displayedCartItems).toBeElementsArrayOfSize(itemIds.length);
 
@@ -94,7 +94,7 @@ describe('Cart Page', () => {
       await inventoryItem.addToCartById(id);
     }
 
-    await cartPage.goToCart();
+    await navBar.goToCart();
     const actualQuantity = await cartItem.getTotalQuantity();
     await expect(navBar.cartBadge).toHaveText(actualQuantity.toString());
 
@@ -131,7 +131,7 @@ describe('Cart Page', () => {
         console.log(`[STORE] Click completed for item ${id}`);
       }
 
-      await cartPage.goToCart();
+      await navBar.goToCart();
 
       console.log('[CART] Current URL:', await browser.getUrl());
 
@@ -240,7 +240,7 @@ describe('Cart Page', () => {
       await inventoryItem.addToCartById(id);
     }
 
-    await cartPage.goToCart();
+    await navBar.goToCart();
 
     // Retrieve only products actually present in the cart
     const cartIds = await cartItem.getDisplayedItemIds();
