@@ -44,7 +44,7 @@ class InventoryItem {
     return $(`[data-test-item-id="inventory-item-${id}"]`);
   }
 
-  async getDisplayedItemIds(): Promise<string[]> {
+  async getDisplayedItemIds() {
     const items = await this.displayedInventoryItems;
     const itemIds: string[] = [];
 
@@ -79,7 +79,7 @@ class InventoryItem {
     return Number(priceText.replace(/[^0-9.-]/g, ''));
   }
 
-  async getDisplayedItems(): Promise<InventoryItemData[]> {
+  async getDisplayedItems() {
     const items = await this.displayedInventoryItems;
     const itemData: InventoryItemData[] = [];
 

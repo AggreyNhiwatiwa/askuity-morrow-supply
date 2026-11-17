@@ -1,38 +1,69 @@
-# WebdriverIO E2E Test Framework
+# Morrow Supply Askuity Test Automation suite
 
-This project contains end-to-end tests written using WebdriverIO.
+## Resources 
+- [Test Site]()
+- [Test Case List](https://github.com/AggreyNhiwatiwa/askuity-morrow-supply/blob/1fc764eba909a2d20d0cddf8e8bd5641b68acc61/TESTCASES.md)
+- [Bugs](https://github.com/AggreyNhiwatiwa/askuity-morrow-supply/tree/1fc764eba909a2d20d0cddf8e8bd5641b68acc61/BugReports)
 
-## Prerequisites
+## Opening Remarks
 
-Before you begin, ensure you have the following installed:
+Note, the following were created and used during my work on this suite, however, they need to be tidied before sharing. The details ofc the defects and test cases are in the project also.
+- Link to Jira Board 
+- Link to Confluence Documentation
+- Link to Jira defect backlog
 
-- [Node.js](https://nodejs.org/) (which includes npm)
+Here is a quick look at some of the above:<img width="991" height="1278" alt="Screenshot 2026-11-17 at 11 14 33" src="https://github.com/user-attachments/assets/171ab9bc-2035-46a7-aab4-365f35adc346" />
 
-## Setup
+This suite uses the recently released WDIO v10, as I wanted to get acquainted with any improvements over v9.
 
-1.  **Clone the repository:**
+The suite is also configured to use the WDIO Devtools for test recording and playback.
 
-    ```bash
-    git clone <repository-url>
-    ```
+Note: There are some lengthy comments and logs. I known logs were mentioned in the criteria. Some comments are long due to wanting to explain some more complex sections of code, however I typically would not leave these in production code that I write.
 
-2.  **Navigate to the project directory:**
+## Running the tests
+- There are many configs present, due to my testing of new code on a granular level.
+- References to ffmpeg@7 are for the best compatability with the WDIO DevTools Service for test recording.
+- To run all the tests, use `npm run test:all`
+- This will run the tests on the following 6 configurations:
+  - Desktop
+  - Mobile Small
+  - Mobile Medium
+  - Mobile Large
+  - Tablet
+  - Foldable phone
 
-    ```bash
-    cd interview_framework
-    ```
+Foldable
+## Git
+- I cloned the project and maintained the git history so that my changes could be easily seen.
+- I have also kept my branches up, and did not squash merge any PRs to provide a more comprehensive git history.
 
-3.  **Install the dependencies:**
-    ```bash
-    npm install
-    ```
+## Project Stucture
 
-## Running the Tests
+**Page Objects:** Contain the selectors, actions performed on them, and their loading behaviors.
 
-To run the tests, execute the following command from the root of the project:
+**Components:** Reusable UI elements on a page
 
-```bash
-npm run wdio
-```
+**Spec Files:** Define the actual tests code, as well as setting up the application, executing the actions through the POM and asserting behaviour in the POMs.
 
-This command will start the WebdriverIO test runner, which will execute the spec files located in the `src/specs` directory.
+**Helpers:** Reusable workflows
+
+**Enums:** Stored constants
+
+**Types:** I've defined my interfaces here
+
+**Utils:** Logic which is more abstracted from the actual testing itself, unlike helpers
+
+**Test Data:** Reusable data
+
+**Environmental Variables:** For sensitive information to be kept locally (e.g. login credentials)
+
+## Project Structure Breakdown
+
+- Page Object Models
+  - Login Page
+  - Store Page
+  - Item Details Page
+  - Cart Page
+  - Checkout Page
+  - Order Summary Page
+  - Order Confirmation Page

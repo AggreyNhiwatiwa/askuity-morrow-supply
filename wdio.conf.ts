@@ -176,7 +176,7 @@ export const config: WebdriverIO.Config = {
         video: 'on',
 
         screencast: {
-          enabled: true,
+          enabled: false,
           captureFormat: 'jpeg',
           quality: 70,
           maxWidth: 1280,

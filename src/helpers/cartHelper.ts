@@ -3,8 +3,7 @@ import navBar from '../components/navBar.ts';
 import cartItem from '../components/cartItem.ts';
 import type { CartItemData } from '../types/CartItemData.ts';
 import { calculateCartTotals } from './priceHelper.ts';
-
-const CART_TAX_RATE = 0.08;
+import { TAX_RATE } from '../testData/pricing.ts';
 
 // Adding one of each available product and return its data
 export async function addOneOfEachItemToCart() {
@@ -54,10 +53,10 @@ export async function populateCartAndCalculateTotals() {
     });
   }
 
-  return calculateCartTotals(products, CART_TAX_RATE);
+  return calculateCartTotals(products, TAX_RATE);
 }
 
-export async function getPopulatedCartItemIds(): Promise<string[]> {
+export async function getPopulatedCartItemIds() {
   await browser.waitUntil(async () => (await cartItem.getCount()) > 0, {
     timeout: 5000,
     timeoutMsg: 'No cart items appeared',
