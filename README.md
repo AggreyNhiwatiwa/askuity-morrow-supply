@@ -1,6 +1,7 @@
 # Morrow Supply Askuity Test Automation suite
 
-## Resources 
+## Resources
+
 - [Test Site]()
 - [Test Case List](https://github.com/AggreyNhiwatiwa/askuity-morrow-supply/blob/1fc764eba909a2d20d0cddf8e8bd5641b68acc61/TESTCASES.md)
 - [Bugs](https://github.com/AggreyNhiwatiwa/askuity-morrow-supply/tree/1fc764eba909a2d20d0cddf8e8bd5641b68acc61/BugReports)
@@ -8,7 +9,8 @@
 ## Opening Remarks
 
 Note, the following were created and used during my work on this suite, however, they need to be tidied before sharing. The details ofc the defects and test cases are in the project also.
-- Link to Jira Board 
+
+- Link to Jira Board
 - Link to Confluence Documentation
 - Link to Jira defect backlog
 
@@ -21,6 +23,7 @@ The suite is also configured to use the WDIO Devtools for test recording and pla
 Note: There are some lengthy comments and logs. I known logs were mentioned in the criteria. Some comments are long due to wanting to explain some more complex sections of code, however I typically would not leave these in production code that I write.
 
 ## Running the tests
+
 - There are many configs present, due to my testing of new code on a granular level.
 - References to ffmpeg@7 are for the best compatability with the WDIO DevTools Service for test recording.
 - To run all the tests, use `npm run test:all`
@@ -33,7 +36,9 @@ Note: There are some lengthy comments and logs. I known logs were mentioned in t
   - Foldable phone
 
 Foldable
+
 ## Git
+
 - I cloned the project and maintained the git history so that my changes could be easily seen.
 - I have also kept my branches up, and did not squash merge any PRs to provide a more comprehensive git history.
 
@@ -56,14 +61,3 @@ Foldable
 **Test Data:** Reusable data
 
 **Environmental Variables:** For sensitive information to be kept locally (e.g. login credentials)
-
-## Project Structure Breakdown
-
-- Page Object Models
-  - Login Page
-  - Store Page
-  - Item Details Page
-  - Cart Page
-  - Checkout Page
-  - Order Summary Page
-  - Order Confirmation Page
