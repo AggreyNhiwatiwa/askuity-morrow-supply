@@ -1,4 +1,4 @@
-import type { CartItemData } from '../types/CartItemData.ts';
+import type { CartItemData } from '../types/CartItemData';
 
 export function calculateCartTotals(items: CartItemData[], taxRate: number) {
   const subtotalCents = items.reduce(
