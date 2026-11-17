@@ -1,19 +1,16 @@
 import { expect } from '@wdio/globals';
 import storePage from '../pages/storePage';
-import loginPage from '../pages/loginPage';
 import itemDetailsPage from '../pages/itemDetailsPage';
 import { verifyInventoryItemCount } from '../helpers/storeAssertions';
 import { InventoryCategories } from '../enums/inventoryCategories';
 import { InventorySortOrder } from '../enums/inventorySortOrder';
 import type { InventoryItemData } from '../types/InventoryItemData';
+import { loginAsStandardUser } from '../helpers/authenticationHelper';
 
 describe('Store Page Tests', () => {
   beforeEach(async () => {
-    await loginPage.open();
-    await loginPage.isLoaded();
-    await loginPage.login(process.env.SHOPPER_USERNAME!, process.env.PASSWORD!);
+    await loginAsStandardUser();
     await storePage.isLoaded();
-    //TODO: Only login again if its neccessary, add check for existing session
   });
 
   it('should display the store page', async () => {
