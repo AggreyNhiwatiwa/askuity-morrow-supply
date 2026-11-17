@@ -3,18 +3,18 @@
 ## Added Testcases based on the Test Steps
 
 These test cases are based on the test steps in the Specification Document.
-
 All of these tests have been built to run on both desktop and repsonsive mobile web.
 
 List of Test Cases:
 
 - I don't want to retroactively change my tests to not catch the error
 
-### Tests that are expected to fail!
+### Tests that are expected to fail
 
-- should sort inventory items by High-Low due to this defect:
-- should display all added items in the cart due to this defect:
--
+- should display all added items in the cart due to this defect: https://github.com/AggreyNhiwatiwa/askuity-morrow-supply/blob/eb5abfd1152a1d7655669cdcf460d523b7df094b/BugReports/ASK-4-bolt-t-shirt-cart.md
+
+- should sort inventory items by High-Low due to this defect: https://github.com/AggreyNhiwatiwa/askuity-morrow-supply/blob/eb5abfd1152a1d7655669cdcf460d523b7df094b/BugReports/ASK-19-high-to-low-sort-error.md
+
 
 ### LoginPage
 
