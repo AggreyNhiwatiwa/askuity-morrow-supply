@@ -29,11 +29,9 @@ class StorePage {
   }
 
   /*
-  Retrieves the count of items displayed on the store page
-  Regex to find first sequence of numbers in a string
-  Returns a number I can perform arithmetic on (first number in string)
-  Throws an error if no number is found
-  */
+   * Extracts the displayed item count from text.
+   * Throws an error if no number is found.
+   */
   async getDisplayedItemsCountFromText() {
     const text = await this.noItemsDisplayedText.getText();
     const match = text.match(/\d+/);
@@ -46,12 +44,10 @@ class StorePage {
   }
 
   async selectCategory(category: string) {
-    await this.categoryFilterDropdown.click();
     await this.categoryFilterDropdown.selectByVisibleText(category);
   }
 
   async selectSortOrder(option: string) {
-    await this.sortDropdown.click();
     await this.sortDropdown.selectByVisibleText(option);
   }
 }
