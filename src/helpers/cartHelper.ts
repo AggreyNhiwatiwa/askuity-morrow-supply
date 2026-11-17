@@ -1,19 +1,12 @@
-import cartItem from '../components/cartItem.ts';
 import inventoryItem from '../components/inventoryItem.ts';
 import navBar from '../components/navBar.ts';
-import { CartItemData } from '../types/CartItemData.ts';
+import type { CartItemData } from '../types/CartItemData.ts';
 import { calculateCartTotals } from './priceHelper.ts';
 
+const CART_TAX_RATE = 0.08;
+
+// Adding one of each available product and return its data
 export async function addOneOfEachItemToCart() {
-  const items = await inventoryItem.getDisplayedItems();
-
-  for (const item of items) {
-    const id = item.id.replace('inventory-item-', '');
-    await inventoryItem.addToCartById(id);
-  }
-}
-
-export async function populateCartAndCalculateTotals() {
   await inventoryItem.waitForItems();
 
   const storeItems = await inventoryItem.getDisplayedItems();
@@ -22,37 +15,31 @@ export async function populateCartAndCalculateTotals() {
     throw new Error('No inventory items found');
   }
 
-  const storeItemsById = new Map(
-    storeItems.map((item) => [item.id.replace(/^inventory-item-/, ''), item]),
-  );
+  // Normalize IDs so they match the cart item IDs
+  const items = storeItems.map((item) => ({
+    ...item,
+    id: item.id.replace(/^inventory-item-/, ''),
+  }));
 
-  // Populate cart
-  await addOneOfEachItemToCart();
+  for (const item of items) {
+    await inventoryItem.addToCartById(item.id);
+  }
+
+  return items;
+}
+
+// Populate the cart and calculate independently expected totals
+export async function populateCartAndCalculateTotals() {
+  const items = await addOneOfEachItemToCart();
+
+  const products: CartItemData[] = items.map((item) => ({
+    ...item,
+    quantity: 1,
+  }));
+
+  const expectedTotals = calculateCartTotals(products, CART_TAX_RATE);
 
   await navBar.goToCart();
 
-  // Retrieve actual cart products and quantities
-  const cartIds = await cartItem.getDisplayedItemIds();
-
-  if (cartIds.length === 0) {
-    throw new Error('Cart is empty');
-  }
-
-  const products: CartItemData[] = [];
-
-  for (const id of cartIds) {
-    const product = storeItemsById.get(id);
-
-    if (!product) {
-      throw new Error(`Product ${id} not found in store inventory`);
-    }
-
-    products.push({
-      ...product,
-      id,
-      quantity: await cartItem.getQuantityById(id),
-    });
-  }
-
-  return calculateCartTotals(products, 0.08);
+  return expectedTotals;
 }
