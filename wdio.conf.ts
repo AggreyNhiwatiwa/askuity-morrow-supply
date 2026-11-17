@@ -42,6 +42,11 @@ if (!(profileName in mobileViewports)) {
 
 const viewport = mobileViewports[profileName as keyof typeof mobileViewports];
 
+const testEnvironment =
+  target === 'desktop'
+    ? 'Desktop Chrome'
+    : `${profileName} (${viewport.width}x${viewport.height}, DPR ${viewport.pixelRatio})`;
+
 export const config: WebdriverIO.Config = {
   //
   // ====================
@@ -202,6 +207,11 @@ export const config: WebdriverIO.Config = {
       'spec',
       {
         addConsoleLogs: true,
+        symbols: {
+          passed: `✓ [${testEnvironment}]`,
+          failed: `✖ [${testEnvironment}]`,
+          skipped: `- [${testEnvironment}]`,
+        },
       },
     ],
   ],

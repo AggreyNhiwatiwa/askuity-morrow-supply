@@ -30,6 +30,7 @@
     "test:mobile:tablet": "TEST_PROFILE=tablet npm run test:mobile",
     "test:mobile:foldable": "TEST_PROFILE=foldable npm run test:mobile",
     "test:mobile:all": "result=0; for profile in mobile-s mobile-m mobile-l tablet foldable; do TEST_PROFILE=\"$profile\" npm run test:mobile || result=1; done; exit \"$result\"",
+    "test:mobile:login:all": "result=0; for profile in mobile-s mobile-m mobile-l tablet foldable; do echo \"Testing login on $profile\"; TEST_PROFILE=\"$profile\" npm run test:mobile -- --spec ./src/specs/loginPage.spec.ts || result=1; done; exit \"$result\"",
     "test:login": "npm run test:e2e -- --spec ./src/specs/loginPage.spec.ts",
     "test:cart": "npm run test:e2e -- --spec ./src/specs/cartPage.spec.ts",
     "test:store": "npm run test:e2e -- --spec ./src/specs/storePage.spec.ts",
