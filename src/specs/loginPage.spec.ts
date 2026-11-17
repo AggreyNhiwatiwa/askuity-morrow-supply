@@ -8,7 +8,6 @@ describe('Login Page Tests', () => {
 
   beforeEach(async () => {
     await loginPage.open();
-    await loginPage.isLoaded();
   });
 
   /*
